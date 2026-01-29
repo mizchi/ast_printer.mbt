@@ -1,0 +1,13 @@
+{
+  "name": "mizchi/ast_printer",
+  "version": "0.1.0",
+  "deps": {
+    "moonbitlang/parser": "0.1.13"
+  },
+  "source": "src",
+  "readme": "README.mbt.md",
+  "repository": "https://github.com/mizchi/ast_printer.mbt",
+  "license": "Apache-2.0",
+  "keywords": ["parser", "printer", "ast", "source-code"],
+  "description": "A pretty printer for MoonBit AST - converts parsed AST back to source code"
+}

@@ -1,0 +1,11 @@
+{
+  "import": [
+    "moonbitlang/parser/syntax",
+    "moonbitlang/parser/attribute",
+    "moonbitlang/parser/basic",
+    "moonbitlang/core/list"
+  ],
+  "wbtest-import": [
+    { "path": "moonbitlang/parser", "alias": "parser" }
+  ]
+}

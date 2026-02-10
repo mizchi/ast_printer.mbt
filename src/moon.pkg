@@ -1,0 +1,10 @@
+import {
+  "moonbitlang/parser/syntax",
+  "moonbitlang/parser/attribute",
+  "moonbitlang/parser/basic",
+  "moonbitlang/core/list",
+}
+
+import {
+  "moonbitlang/parser" @parser,
+} for "wbtest"

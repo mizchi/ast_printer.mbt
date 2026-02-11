@@ -331,6 +331,7 @@ fn print_decl_body(
   indent? : Int = 0,
 ) -> Unit {
   match body {
+    DeclNone => ()
     DeclBody(expr~, ..) => {
       buf.write_string("{\n")
       print_indent(buf, indent + 1)

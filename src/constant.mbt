@@ -33,14 +33,14 @@ pub fn print_constant(buf : StringBuilder, c : @syntax.Constant) -> Unit {
     }
     Float(s) => {
       buf.write_string(s)
-      if not(s.contains(".")) {
+      if !s.contains(".") {
         buf.write_string(".0")
       }
       buf.write_char('F')
     }
     Double(s) => {
       buf.write_string(s)
-      if not(s.contains(".")) {
+      if !s.contains(".") {
         buf.write_string(".0")
       }
     }

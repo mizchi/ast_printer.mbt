@@ -81,7 +81,7 @@ pub fn print_expr(
       buf.write_char('[')
       let mut first = true
       for e in exprs {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -93,7 +93,7 @@ pub fn print_expr(
       buf.write_char('[')
       let mut first = true
       for e in elems {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -111,7 +111,7 @@ pub fn print_expr(
       buf.write_char('(')
       let mut first = true
       for e in exprs {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -264,7 +264,7 @@ pub fn print_expr(
       buf.write_string("for ")
       let mut first = true
       for b in binders {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -279,11 +279,11 @@ pub fn print_expr(
         }
         None => ()
       }
-      if not(continue_block.is_empty()) {
+      if !continue_block.is_empty() {
         buf.write_string("; ")
         let mut first_c = true
         for b in continue_block {
-          if not(first_c) {
+          if !first_c {
             buf.write_string(", ")
           }
           first_c = false
@@ -321,7 +321,7 @@ pub fn print_expr(
       buf.write_string("for ")
       let mut first = true
       for b in binders {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -518,7 +518,7 @@ pub fn print_expr(
       buf.write_string("{ ")
       let mut first = true
       for f in fields {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -677,11 +677,11 @@ pub fn print_expr(
         }
         None => ()
       }
-      if not(args.is_empty()) {
+      if !args.is_empty() {
         buf.write_char(' ')
         let mut first = true
         for e in args {
-          if not(first) {
+          if !first {
             buf.write_string(", ")
           }
           first = false
@@ -699,7 +699,7 @@ pub fn print_expr(
       } else {
         print_expr(buf, body)
       }
-      if not(catch_.is_empty()) {
+      if !catch_.is_empty() {
         buf.write_string(" catch {\n")
         for c in catch_ {
           buf.write_string("  ")
@@ -770,7 +770,7 @@ pub fn print_expr(
       buf.write_string("{ ")
       let mut first = true
       for e in elems {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -891,7 +891,7 @@ fn print_arguments(
 ) -> Unit {
   let mut first = true
   for arg in args {
-    if not(first) {
+    if !first {
       buf.write_string(", ")
     }
     first = false
@@ -927,7 +927,7 @@ fn print_lex_top_patterns(
 ) -> Unit {
   let mut first = true
   for p in pats {
-    if not(first) {
+    if !first {
       buf.write_char(' ')
     }
     first = false
@@ -978,7 +978,7 @@ fn print_lex_pattern(buf : StringBuilder, pat : @syntax.LexPattern) -> Unit {
     Sequence(pats~, ..) => {
       let mut first = true
       for p in pats {
-        if not(first) {
+        if !first {
           buf.write_char(' ')
         }
         first = false

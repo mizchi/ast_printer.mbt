@@ -122,60 +122,6 @@ fn print_impl(buf : StringBuilder, impl_ : @syntax.Impl) -> Unit {
       print_decl_body(buf, body)
     }
     TopExpr(expr~, ..) => print_expr(buf, expr)
-    TopFuncAlias(pkg~, type_name~, targets~, vis~, attrs~, is_list~, doc~, ..) => {
-      print_doc_string(buf, doc)
-      print_attributes(buf, attrs)
-      print_visibility(buf, vis)
-      buf.write_string("fnalias ")
-      match pkg {
-        Some(p) => {
-          buf.write_char('@')
-          buf.write_string(p.name)
-        }
-        None => ()
-      }
-      match type_name {
-        Some(tn) => {
-          if pkg is Some(_) {
-            buf.write_char('.')
-          }
-          buf.write_string(tn.name)
-          buf.write_string("::")
-        }
-        None => if pkg is Some(_) { buf.write_char('.') }
-      }
-      print_alias_targets(buf, targets, is_list)
-    }
-    TopBatchTypeAlias(pkg~, targets~, vis~, attrs~, is_list~, doc~, ..) => {
-      print_doc_string(buf, doc)
-      print_attributes(buf, attrs)
-      print_visibility(buf, vis)
-      buf.write_string("typealias ")
-      match pkg {
-        Some(p) => {
-          buf.write_char('@')
-          buf.write_string(p.name)
-          buf.write_char('.')
-        }
-        None => ()
-      }
-      print_alias_targets(buf, targets, is_list)
-    }
-    TopBatchTraitAlias(pkg~, targets~, vis~, attrs~, is_list~, doc~, ..) => {
-      print_doc_string(buf, doc)
-      print_attributes(buf, attrs)
-      print_visibility(buf, vis)
-      buf.write_string("traitalias ")
-      match pkg {
-        Some(p) => {
-          buf.write_char('@')
-          buf.write_string(p.name)
-          buf.write_char('.')
-        }
-        None => ()
-      }
-      print_alias_targets(buf, targets, is_list)
-    }
     TopView(
       quantifiers~,
       source_ty~,
@@ -200,7 +146,7 @@ fn print_impl(buf : StringBuilder, impl_ : @syntax.Impl) -> Unit {
         buf.write_string("  ")
         buf.write_string(constr.name.name)
         match constr.args {
-          Some(args) if not(args.is_empty()) => {
+          Some(args) if !args.is_empty() => {
             buf.write_char('(')
             print_constr_params(buf, args)
             buf.write_char(')')
@@ -256,39 +202,6 @@ fn print_impl(buf : StringBuilder, impl_ : @syntax.Impl) -> Unit {
       }
       buf.write_char('}')
     }
-  }
-}
-
-///|
-fn print_alias_targets(
-  buf : StringBuilder,
-  targets : @list.List[@syntax.AliasTarget],
-  is_list : Bool,
-) -> Unit {
-  if is_list {
-    buf.write_char('(')
-  }
-  let mut first = true
-  for target in targets {
-    if not(first) {
-      buf.write_string(", ")
-    }
-    first = false
-    // target = original type name, binder = new alias name
-    // Syntax: typealias OriginalName as AliasName
-    match target.target {
-      Some(t) => {
-        buf.write_string(t.name)
-        buf.write_string(" as ")
-        buf.write_string(target.binder.name)
-      }
-      None =>
-        // No alias, just the name
-        buf.write_string(target.binder.name)
-    }
-  }
-  if is_list {
-    buf.write_char(')')
   }
 }
 
@@ -397,7 +310,7 @@ fn print_type_decl(buf : StringBuilder, decl : @syntax.TypeDecl) -> Unit {
         buf.write_string("  ")
         buf.write_string(constr.name.name)
         match constr.args {
-          Some(args) if not(args.is_empty()) => {
+          Some(args) if !args.is_empty() => {
             buf.write_char('(')
             print_constr_params(buf, args)
             buf.write_char(')')
@@ -408,7 +321,7 @@ fn print_type_decl(buf : StringBuilder, decl : @syntax.TypeDecl) -> Unit {
       }
       buf.write_char('}')
     }
-    Record(fields) => {
+    Record(fields~, ..) => {
       buf.write_string("struct ")
       buf.write_string(decl.tycon)
       print_type_params(buf, decl.params)
@@ -427,17 +340,10 @@ fn print_type_decl(buf : StringBuilder, decl : @syntax.TypeDecl) -> Unit {
       buf.write_char('}')
     }
     Alias(ty) => {
-      buf.write_string("typealias ")
-      buf.write_string(decl.tycon)
-      print_type_params(buf, decl.params)
-      buf.write_string(" = ")
-      print_type(buf, ty)
-    }
-    Newtype(ty) => {
       buf.write_string("type ")
       buf.write_string(decl.tycon)
       print_type_params(buf, decl.params)
-      buf.write_char(' ')
+      buf.write_string(" = ")
       print_type(buf, ty)
     }
     Abstract => {
@@ -473,7 +379,7 @@ fn print_type_decl(buf : StringBuilder, decl : @syntax.TypeDecl) -> Unit {
             buf.write_string("  ")
             buf.write_string(constr.name.name)
             match constr.args {
-              Some(args) if not(args.is_empty()) => {
+              Some(args) if !args.is_empty() => {
                 buf.write_char('(')
                 print_constr_params(buf, args)
                 buf.write_char(')')
@@ -487,11 +393,11 @@ fn print_type_decl(buf : StringBuilder, decl : @syntax.TypeDecl) -> Unit {
       }
     }
   }
-  if not(decl.deriving.is_empty()) {
+  if !decl.deriving.is_empty() {
     buf.write_string(" derive(")
     let mut first = true
     for d in decl.deriving {
-      if not(first) {
+      if !first {
         buf.write_string(", ")
       }
       first = false
@@ -506,11 +412,11 @@ fn print_trait_decl(buf : StringBuilder, decl : @syntax.TraitDecl) -> Unit {
   print_visibility(buf, decl.vis)
   buf.write_string("trait ")
   buf.write_string(decl.name.name)
-  if not(decl.supers.is_empty()) {
+  if !decl.supers.is_empty() {
     buf.write_string(" : ")
     let mut first = true
     for super_ in decl.supers {
-      if not(first) {
+      if !first {
         buf.write_string(" + ")
       }
       first = false
@@ -561,20 +467,20 @@ fn print_quantifiers(
   buf : StringBuilder,
   quantifiers : @list.List[@syntax.TypeVarBinder],
 ) -> Unit {
-  if not(quantifiers.is_empty()) {
+  if !quantifiers.is_empty() {
     buf.write_char('[')
     let mut first = true
     for q in quantifiers {
-      if not(first) {
+      if !first {
         buf.write_string(", ")
       }
       first = false
       buf.write_string(q.name)
-      if not(q.constraints.is_empty()) {
+      if !q.constraints.is_empty() {
         buf.write_string(" : ")
         let mut first_c = true
         for c in q.constraints {
-          if not(first_c) {
+          if !first_c {
             buf.write_string(" + ")
           }
           first_c = false
@@ -591,11 +497,11 @@ fn print_type_params(
   buf : StringBuilder,
   params : @list.List[@syntax.TypeDeclBinder],
 ) -> Unit {
-  if not(params.is_empty()) {
+  if !params.is_empty() {
     buf.write_char('[')
     let mut first = true
     for p in params {
-      if not(first) {
+      if !first {
         buf.write_string(", ")
       }
       first = false
@@ -615,7 +521,7 @@ fn print_constr_params(
 ) -> Unit {
   let mut first = true
   for p in params {
-    if not(first) {
+    if !first {
       buf.write_string(", ")
     }
     first = false
@@ -642,7 +548,7 @@ fn print_trait_method_params(
 ) -> Unit {
   let mut first = true
   for p in params {
-    if not(first) {
+    if !first {
       buf.write_string(", ")
     }
     first = false
@@ -685,7 +591,7 @@ fn print_parameters(
 ) -> Unit {
   let mut first = true
   for p in params {
-    if not(first) {
+    if !first {
       buf.write_string(", ")
     }
     first = false

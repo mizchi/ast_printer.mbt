@@ -24,7 +24,7 @@ pub fn print_pattern(buf : StringBuilder, pat : @syntax.Pattern) -> Unit {
     Constr(constr~, args~, is_open~, ..) => {
       print_constructor(buf, constr)
       match args {
-        Some(args) if not(args.is_empty()) => {
+        Some(args) if !args.is_empty() => {
           buf.write_char('(')
           print_constr_pat_args(buf, args)
           if is_open {
@@ -44,7 +44,7 @@ pub fn print_pattern(buf : StringBuilder, pat : @syntax.Pattern) -> Unit {
       buf.write_char('(')
       let mut first = true
       for p in pats {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -57,7 +57,7 @@ pub fn print_pattern(buf : StringBuilder, pat : @syntax.Pattern) -> Unit {
       buf.write_string("{ ")
       let mut first = true
       for f in fields {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -69,8 +69,8 @@ pub fn print_pattern(buf : StringBuilder, pat : @syntax.Pattern) -> Unit {
           print_pattern(buf, f.pattern)
         }
       }
-      if not(is_closed) {
-        if not(fields.is_empty()) {
+      if !is_closed {
+        if !fields.is_empty() {
           buf.write_string(", ")
         }
         buf.write_string("..")
@@ -81,7 +81,7 @@ pub fn print_pattern(buf : StringBuilder, pat : @syntax.Pattern) -> Unit {
       buf.write_string("{ ")
       let mut first = true
       for e in elems {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -92,8 +92,8 @@ pub fn print_pattern(buf : StringBuilder, pat : @syntax.Pattern) -> Unit {
         }
         print_pattern(buf, e.pat)
       }
-      if not(is_closed) {
-        if not(elems.is_empty()) {
+      if !is_closed {
+        if !elems.is_empty() {
           buf.write_string(", ")
         }
         buf.write_string("..")
@@ -126,7 +126,7 @@ fn print_array_patterns(
     Closed(pats) => {
       let mut first = true
       for p in pats {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
@@ -136,13 +136,13 @@ fn print_array_patterns(
     Open(before, after, binder) => {
       let mut first = true
       for p in before {
-        if not(first) {
+        if !first {
           buf.write_string(", ")
         }
         first = false
         print_array_pattern(buf, p)
       }
-      if not(first) {
+      if !first {
         buf.write_string(", ")
       }
       match binder {
@@ -201,7 +201,7 @@ fn print_constr_pat_args(
 ) -> Unit {
   let mut first = true
   for arg in args {
-    if not(first) {
+    if !first {
       buf.write_string(", ")
     }
     first = false

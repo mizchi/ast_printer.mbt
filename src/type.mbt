@@ -33,7 +33,7 @@ pub fn print_type(buf : StringBuilder, ty : @syntax.Type) -> Unit {
     }
     Name(constr_id~, tys~, ..) => {
       print_constr_id(buf, constr_id)
-      if not(tys.is_empty()) {
+      if !tys.is_empty() {
         buf.write_char('[')
         print_type_list(buf, tys)
         buf.write_char(']')
@@ -54,7 +54,7 @@ pub fn print_type(buf : StringBuilder, ty : @syntax.Type) -> Unit {
 fn print_type_list(buf : StringBuilder, tys : @list.List[@syntax.Type]) -> Unit {
   let mut first = true
   for ty in tys {
-    if not(first) {
+    if !first {
       buf.write_string(", ")
     }
     first = false

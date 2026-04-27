@@ -302,7 +302,7 @@ test "roundtrip: impl trait" {
 test "roundtrip: type alias" {
   assert_roundtrip(
     (
-      #|typealias Point as P
+      #|type P = Point
     ),
   )
 }
